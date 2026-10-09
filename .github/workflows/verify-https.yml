@@ -1,0 +1,56 @@
+name: Testar Store no HTTPS publico
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-https.yml'
+permissions:
+  contents: read
+jobs:
+  teste-real-https:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testar catalogo e 10 downloads reais sem executar extensoes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.parse,ssl,json,hashlib,time
+          from pathlib import Path
+          base='https://brumad.github.io/MadsDeckStore/'
+          tls=ssl.create_default_context()
+          def get(path, limit):
+              assert path.startswith('packages/') or path=='catalog.signed.json'
+              url=urllib.parse.urljoin(base,path)
+              req=urllib.request.Request(url,headers={'User-Agent':'MadsDeckStore-HTTPS-ReadOnly-Test'})
+              with urllib.request.urlopen(req,timeout=60,context=tls) as response:
+                  assert response.status==200
+                  assert urllib.parse.urlsplit(response.geturl()).netloc=='brumad.github.io'
+                  blob=response.read(limit+1)
+                  if len(blob)>limit:raise ValueError('Excesso de bytes: '+path)
+                  return blob
+          expected=Path('catalog.signed.json').read_bytes()
+          for attempt in range(6):
+              try:
+                  online=get('catalog.signed.json',4*1024*1024)
+                  assert online==expected,'Catalogo remoto difere do atual'
+                  break
+              except Exception:
+                  if attempt==5:raise
+                  time.sleep(5)
+          items=json.loads(online)['catalog']['items']
+          assert len(items)==10
+          assert all('medal' not in x['id'].lower() for x in items)
+          for item in items:
+              path=item['packageUrl']
+              assert path.startswith('packages/') and path.count('/')==1 and '..' not in path
+              online_package=get(path,64*1024*1024)
+              assert len(online_package)==item['size'],path+' tamanho errado'
+              assert hashlib.sha256(online_package).hexdigest()==item['sha256'],path+' SHA256 errado'
+              assert online_package==Path(path).read_bytes(),path+' bytes remotos diferem do GitHub'
+              print('OK HTTPS',path,len(online_package))
+          print('PASSOU: catalogo e 10 extensoes acessiveis via HTTPS. Medal ausente.')
+          print('Nota: extensoes nao foram executadas; nao representa certificacao antivirus.')
+          PY
