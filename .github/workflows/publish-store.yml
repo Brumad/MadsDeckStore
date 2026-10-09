@@ -1,46 +1,36 @@
-name: Verificar e publicar MadsDeck Store
+name: Verificar MadsDeck Store (10 extensoes, sem Medal)
+
+# O Pages deste repositorio e publicado diretamente pela branch main.
+# Este workflow verifica o catalogo assinado e as 10 extensoes.
+# Nao faz um segundo deploy nem executa arquivos .mdx.
 on:
-  workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - catalog.signed.json
-      - catalog_public.b64
-      - extension_public_keys.csv
-      - packages/**
-      - verify_store.py
-      - .github/workflows/publish-store.yml
+      - 'catalog.signed.json'
+      - 'catalog_public.b64'
+      - 'extension_public_keys.csv'
+      - 'packages/**'
+      - 'verify_store.py'
+      - '.github/workflows/publish-store.yml'
+  workflow_dispatch:
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: "madsdeck-pages"
-  cancel-in-progress: false
+
 jobs:
   verify:
+    name: Verificar catalogo e pacotes assinados
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Obter arquivos da Store
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Instalar biblioteca criptografica
+      - name: Instalar biblioteca para verificação Ed25519
         run: python -m pip install cryptography
-      - name: Verificar catalogo e 10 pacotes assinados, sem executar binaries
+      - name: Verificar catalogo e 10 extensoes sem executar binarios
         run: python verify_store.py
-      - name: Preparar Pages
-        uses: actions/configure-pages@v5
-      - name: Artefato Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: verify
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
