@@ -1,0 +1,72 @@
+{
+  "items": [
+    {
+      "id": "catalog",
+      "path": "catalog.signed.json",
+      "size": 9949,
+      "sha256": "bca54e5ed028bbd712ad4a9f7e307bf333cdab5156d8908adf04057032a66f80"
+    },
+    {
+      "id": "official.spotify",
+      "path": "packages/official.spotify-1.0.4.mdx",
+      "size": 6261862,
+      "sha256": "25877bf33fc615b717eafc9898769d63e3f37c0cd8e99d9768a39e36afddc4fc"
+    },
+    {
+      "id": "official.gta",
+      "path": "packages/official.gta-1.0.0.mdx",
+      "size": 6373623,
+      "sha256": "2cf8290991c3a4510c22eaae3da270a6fab8d556f0dcf10fa69ac23d617e9c19"
+    },
+    {
+      "id": "official.discord",
+      "path": "packages/official.discord-0.9.0.mdx",
+      "size": 939016,
+      "sha256": "3f919e704f18d2758fb48589aca6d38d1e9f475547836b6c2593dc5a806865d0"
+    },
+    {
+      "id": "official.obs",
+      "path": "packages/official.obs-0.9.0.mdx",
+      "size": 1900138,
+      "sha256": "6788254c7ba9da3bd64f8b6543c46de04dcaf499a7f4caf93dfcc5fc98cda886"
+    },
+    {
+      "id": "official.steam",
+      "path": "packages/official.steam-0.9.0.mdx",
+      "size": 1898182,
+      "sha256": "e0da01ecb2e300b7d280cf9db7dea35f8cef29891cd1e5e3b8fcee9362449198"
+    },
+    {
+      "id": "official.voicemod",
+      "path": "packages/official.voicemod-0.9.0.mdx",
+      "size": 1904892,
+      "sha256": "fdff3d2a569217de5166927641187d1caefbf83502b7ea955904ea70a2508b02"
+    },
+    {
+      "id": "official.amd",
+      "path": "packages/official.amd-0.9.0.mdx",
+      "size": 1899661,
+      "sha256": "cd80fea07031dc50f9b7f45bc45706552a39e1dde75f043666c72f12be32178d"
+    },
+    {
+      "id": "official.meter",
+      "path": "packages/official.meter-0.9.0.mdx",
+      "size": 1837200,
+      "sha256": "f58194105c41d5b1a623eb7fe11b315a7823c1ae5940c66a9e26523f477171f8"
+    },
+    {
+      "id": "official.voicemeeter",
+      "path": "packages/official.voicemeeter-0.9.0.mdx",
+      "size": 1898853,
+      "sha256": "44d5d1f3bdd26f85a5ce177f67986548d402ba3ec23a4c0748974783543b20ad"
+    },
+    {
+      "id": "official.playnite",
+      "path": "packages/official.playnite-0.9.0.mdx",
+      "size": 2062485,
+      "sha256": "6cbaf1b3da6bc110ff9659804a3cc9f480ca661409fd1fb74337f2bada804182"
+    }
+  ],
+  "suspendedExtension": "official.medal",
+  "warning": "Catalogo assinado por nova chave: Core precisa reconhecer catalog_public.b64. Arquivos .mdx sem scan de malware independente."
+}
